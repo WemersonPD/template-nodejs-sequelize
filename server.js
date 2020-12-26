@@ -1,10 +1,9 @@
 const express = require('express')
-const env = require('dotenv')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const app = express()
 
-env.config()
+require('dotenv').config();
 
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }))
@@ -23,7 +22,7 @@ app.use((req, res, next) => {
 let port = process.env.APP_PORT || 4000
 
 app.get('/', (req, resp) => {
-	console.log(`App is running at port ${port}`)
+	resp.send(`App is running at port ${port}`)
 })
 
 app.listen(port, () => {
