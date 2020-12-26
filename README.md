@@ -22,6 +22,10 @@ Comando para executar a migration após configurada:
 
 https://redacoes-online.herokuapp.com/api/v1/
 
+## Deploy
+
+Para fazer deploy da aplicação, basta commitar no master.
+
 ## Referências
 
 - [Guia de Referências para configurar Sequelize](https://blog.rocketseat.com.br/nodejs-express-sequelize/)
