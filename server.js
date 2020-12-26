@@ -22,8 +22,12 @@ app.use((req, res, next) => {
 
 let port = process.env.APP_PORT || 4000
 
+app.get('/', (req, resp) => {
+	console.log(`App is running at port ${port}`)
+})
+
 app.listen(port, () => {
-	console.log('Servidor rodando em http://localhost:' + port)
+	console.log('Running at port:' + port)
 })
 
 module.exports = app
