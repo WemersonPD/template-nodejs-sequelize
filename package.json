@@ -1,36 +1,37 @@
 {
-	"name": "redacoes-api",
-	"version": "1.0.0",
-	"description": "Projeto para o IFPI",
-	"main": "server.js",
-	"dependencies": {
-		"body-parser": "^1.19.0",
-		"cors": "^2.8.5",
-		"dotenv": "^8.2.0",
-		"express": "^4.17.1",
-		"morgan": "^1.10.0",
-		"pg": "^8.5.1",
-		"pg-hstore": "^2.3.3",
-		"sequelize": "^6.3.5"
-	},
-	"devDependencies": {
-		"eslint": "^7.16.0",
-		"eslint-config-prettier": "^7.1.0",
-		"eslint-plugin-prettier": "^3.3.0",
-		"nodemon": "^2.0.6",
-		"prettier": "^2.2.1"
-	},
-	"scripts": {
-		"dev": "nodemon server.js"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/WemersonPD/redacoes-api.git"
-	},
-	"author": "",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/WemersonPD/redacoes-api/issues"
-	},
-	"homepage": "https://github.com/WemersonPD/redacoes-api#readme"
+  "name": "redacoes-api",
+  "version": "1.0.0",
+  "description": "Projeto para o IFPI",
+  "main": "server.js",
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "pg": "^8.5.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.3.5"
+  },
+  "devDependencies": {
+    "eslint": "^7.16.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-prettier": "^3.3.0",
+    "nodemon": "^2.0.6",
+    "prettier": "^2.2.1"
+  },
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WemersonPD/redacoes-api.git"
+  },
+  "author": "Wemerson Patrick De Lima Silva",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WemersonPD/redacoes-api/issues"
+  },
+  "homepage": "https://github.com/WemersonPD/redacoes-api#readme"
 }

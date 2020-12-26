@@ -4,27 +4,26 @@ const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
 
+// Config doteenv
 require('dotenv').config();
+const PORT = process.env.PORT || 80;
 
 // Log application
 app.use(morgan('dev'));
 
+// Confug body parser
 app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 app.use(bodyParser.json({ limit: '100mb' }));
 
 // Cors
 app.use(cors());
 
-// require('./src/app/routes')(app)
+// Routes
+require('./src/app/routes')(app);
 
-const PORT = process.env.PORT || 80;
-
-app.get('/', (req, resp) => {
-	resp.send(`App is running at port ${PORT}`);
-});
-
+// Port
 app.listen(PORT, () => {
-	console.log(`Running at port ${PORT}`);
+  console.log(`Running at port ${PORT}`);
 });
 
 module.exports = app;
