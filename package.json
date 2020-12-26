@@ -19,7 +19,8 @@
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-prettier": "^3.3.0",
     "nodemon": "^2.0.6",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "sequelize-cli": "^6.2.0"
   },
   "scripts": {
     "dev": "nodemon server.js"
