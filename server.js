@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 
 // require('./src/app/routes')(app)
 
-let port = process.env.APP_PORT || 4000
+let port = process.env.PORT || 80
 
 app.get('/', (req, resp) => {
 	resp.send(`App is running at port ${port}`)
