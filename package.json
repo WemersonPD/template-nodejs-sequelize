@@ -12,15 +12,15 @@
     "morgan": "^1.10.0",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^6.3.5"
+    "sequelize": "^6.3.5",
+    "sequelize-cli": "^6.2.0"
   },
   "devDependencies": {
     "eslint": "^7.16.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-prettier": "^3.3.0",
     "nodemon": "^2.0.6",
-    "prettier": "^2.2.1",
-    "sequelize-cli": "^6.2.0"
+    "prettier": "^2.2.1"
   },
   "scripts": {
     "dev": "nodemon server.js",
