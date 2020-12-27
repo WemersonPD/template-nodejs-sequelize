@@ -15,5 +15,10 @@ module.exports = {
     'migrations',
   ),
   'models-path': path.resolve(__dirname, 'src', 'dabatase', 'models'),
-  // 'seeders-path': path.resolve('./src/dabatase', './seeders'),
+  'seeders-path': path.resolve(
+    __dirname,
+    'src',
+    'database',
+    'seeders',
+  ),
 };

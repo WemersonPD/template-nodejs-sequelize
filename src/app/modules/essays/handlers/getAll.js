@@ -11,8 +11,7 @@ module.exports = async (req, resp) => {
 
   try {
     const data = await Essays.findAndCountAll(query);
-    console.log(data);
-    if (!isEmpty(data.count)) {
+    if (!isEmpty(data.rows)) {
       return resp
         .status(200)
         .json(
