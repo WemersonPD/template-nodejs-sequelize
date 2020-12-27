@@ -15,23 +15,15 @@ module.exports = {
       },
       tema: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       redacao: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       nota: {
-        type: Sequelize.ARRAY(Sequelize.DECIMAL),
-        allowNull: false,
-      },
-      create_at: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-      update_at: {
-        type: Sequelize.DATE,
-        allowNull: false,
+        type: Sequelize.ARRAY(Sequelize.REAL),
+        allowNull: true,
       },
     });
   },

@@ -6,6 +6,6 @@ module.exports = {
   host: process.env.DATABASE_HOST,
   dialect: 'postgres',
   define: {
-    timestemps: true,
+    timestemps: false,
   },
 };
