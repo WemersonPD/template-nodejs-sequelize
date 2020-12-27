@@ -23,7 +23,9 @@
     "sequelize-cli": "^6.2.0"
   },
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "migrate": "sequelize db:migrate",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
