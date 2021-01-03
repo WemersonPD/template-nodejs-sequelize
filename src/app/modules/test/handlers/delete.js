@@ -2,35 +2,39 @@ const isEmpty = require('lodash/isEmpty');
 
 const FUNCTIONS = require('../../../helpers/functions');
 const db = require('../../../../database/models/');
-const Essays = db.essays;
+const Test = db.test;
 
 module.exports = async (req, resp) => {
+  const id = req.params.id;
+
   const query = {
-    order: [['id', 'ASC']],
+    where: {
+      id,
+    },
   };
 
   try {
-    const data = await Essays.findAndCountAll(query);
-    if (!isEmpty(data.rows)) {
+    const result = await Test.destroy(query);
+    if (!isEmpty(result)) {
       return resp
         .status(200)
         .json(
           FUNCTIONS.objectReturn(
-            'Redações encontradas',
-            data,
+            'Testes deletado com sucesso',
+            null,
             false,
             200,
           ),
         );
     } else {
       return resp
-        .status(404)
+        .status(400)
         .json(
           FUNCTIONS.objectReturn(
-            'Nenhuma redação encontrada',
+            'Informe um id válido',
             null,
             false,
-            404,
+            400,
           ),
         );
     }
@@ -38,6 +42,6 @@ module.exports = async (req, resp) => {
     console.log(error);
     return resp
       .status(500)
-      .json({ message: error.message, route: '/essay/all' });
+      .json({ message: error.message, route: '/test' });
   }
 };

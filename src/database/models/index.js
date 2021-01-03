@@ -8,6 +8,6 @@ const db = {};
 db.Sequelize = Sequelize;
 db.connection = connection;
 
-db.essays = require('./essays.model')(connection, Sequelize);
+db.test = require('./test.model')(connection, Sequelize);
 
 module.exports = db;

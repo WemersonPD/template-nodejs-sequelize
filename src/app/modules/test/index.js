@@ -10,7 +10,7 @@ const HANDLERS = {
 
 router.post('/', HANDLERS.create);
 router.get('/', HANDLERS.getAll);
-router.put('/', HANDLERS.update);
-router.delete('/', HANDLERS.delete);
+router.put('/:id', HANDLERS.update);
+router.delete('/:id', HANDLERS.delete);
 
 module.exports = router;
