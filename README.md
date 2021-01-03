@@ -20,6 +20,16 @@ Comando para executar a migration após configurada:
 
 - `npx sequelize db:migrate`
 
+## Seed (Sequelize)
+
+Comando para criar uma nova seed:
+
+- `npx sequelize seed:generate --name=nome-seed`
+
+Comando para executar a migration após configurada:
+
+- `npx sequelize db:sedd:all`
+
 ## URI
 
 https://api-example
