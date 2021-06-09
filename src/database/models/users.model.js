@@ -11,10 +11,7 @@ module.exports = (connection, Sequelize) => {
       email: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: {
-          args: true,
-          msg: 'Email address already in use!',
-        },
+        unique: true,
         validate: {
           isEmail: true,
         },
@@ -24,13 +21,9 @@ module.exports = (connection, Sequelize) => {
         allowNull: false,
       },
       taxDocumentNumber: {
-        // CPF or CNPJ number
         type: Sequelize.STRING,
         allowNull: false,
-        unique: {
-          args: true,
-          msg: 'CPF/CNPJ já em uso!',
-        },
+        unique: true,
       },
       taxDocumentType: {
         type: Sequelize.ENUM('cpf', 'cnpj'),
@@ -73,7 +66,7 @@ module.exports = (connection, Sequelize) => {
           key: 'id',
         },
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        onDelete: 'SET NULL',
         allowNull: false,
       },
       emailValidationStatus: {
