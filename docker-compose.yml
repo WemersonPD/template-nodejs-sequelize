@@ -12,7 +12,7 @@ services:
     environment:
       POSTGRES_USER: pguser
       POSTGRES_PASSWORD: pgpassword
-      POSTGRES_DB: redacoes
+      POSTGRES_DB: gestorVet
 
   adminer:
     image: adminer

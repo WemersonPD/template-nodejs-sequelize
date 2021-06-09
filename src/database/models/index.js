@@ -8,6 +8,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.connection = connection;
 
-db.test = require('./test.model')(connection, Sequelize);
+db.Users = require('./users.model')(connection, Sequelize);
+db.Addresses = require('./addresses.model')(connection, Sequelize);
 
 module.exports = db;
