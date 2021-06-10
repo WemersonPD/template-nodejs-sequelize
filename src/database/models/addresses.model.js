@@ -48,12 +48,12 @@ module.exports = (connection, Sequelize) => {
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.NOW,
       },
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.NOW,
       },
     },
     {

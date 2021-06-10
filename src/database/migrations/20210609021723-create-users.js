@@ -44,6 +44,16 @@ module.exports = {
         allowNull: false,
         // unique: true,
       },
+      phoneNumberFull: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+        defaultValue: `${Sequelize.col(
+          'phoneCountryCode',
+        )}${Sequelize.col('phoneAreaCode')}${Sequelize.col(
+          'phoneNumber',
+        )}`,
+      },
       birthDate: {
         type: Sequelize.DATE,
         allowNull: false,
@@ -91,12 +101,12 @@ module.exports = {
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.NOW,
       },
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.NOW,
       },
     });
   },
