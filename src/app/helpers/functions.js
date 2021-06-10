@@ -1,5 +1,7 @@
 const moment = require('moment');
 const { cpf, cnpj } = require('cpf-cnpj-validator');
+const emailValidator = require('email-validator');
+const passwordValidator = require('password-validator');
 
 // Default Object to Return in Response
 const objectReturn = (message, data, error, statusCode) => ({
@@ -12,14 +14,38 @@ const objectReturn = (message, data, error, statusCode) => ({
 
 const validateEmail = (email = '') => {
   let isValid = true;
+
   if (!email || !email.includes('@') || email.includes(' ')) {
     isValid = false;
+  } else {
+    const isValidEmail = emailValidator.validate(email);
+    isValid = isValidEmail;
   }
   return isValid;
 };
 
-getNumberRandomInt = (min, max) => {
+const getNumberRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min)) + min;
+};
+
+const validatePassword = (password) => {
+  const passwordValidatorSchema = new passwordValidator();
+  passwordValidatorSchema
+    .is()
+    .min(8)
+    .has()
+    .uppercase()
+    .has()
+    .not()
+    .spaces();
+  // .is().not().oneOf(['Passw0rd', 'Password123']); //Future black list
+  const errorsInPassword = passwordValidatorSchema.validate(
+    password,
+    {
+      list: true,
+    },
+  );
+  return errorsInPassword;
 };
 
 const validateIfAgeBiggerThen18 = (birthDate) => {
@@ -64,6 +90,7 @@ const functions = {
   validateIfAgeBiggerThen18,
   validateIfIsValidDocument,
   removeEspecialChars,
+  validatePassword,
 };
 
 module.exports = functions;

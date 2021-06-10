@@ -32,11 +32,14 @@ const valideteFields = async (body) => {
     email,
     phoneAreaCode,
     phoneNumber,
+    phoneCountryCode,
     birthDate,
     taxDocumentNumber,
     taxDocumentType,
+    password,
   } = body;
 
+  // Re-validete when enter with data, please
   if (email) {
     const isValidEmail = FUNCTIONS.validateEmail(email);
     const emailAlreadyInUse = await validateIfEmailAlreadyInUse(
@@ -88,6 +91,51 @@ const valideteFields = async (body) => {
     }
   }
 
+  // Re-validete when enter with data, please
+  if (phoneAreaCode && phoneNumber) {
+    const countryCode = phoneCountryCode || '55';
+    const phoneNumberFull = FUNCTIONS.removeEspecialChars(
+      `${countryCode}${phoneAreaCode}${phoneNumber}`,
+      true,
+    );
+    const phoneNumberAlreadyInUse =
+      await validateIfPhoneNumberAlreadyInUse(phoneNumberFull);
+    if (phoneNumberAlreadyInUse) {
+      errors.push({
+        // field: 'phoneNumberFull',
+        message: 'O número de telefone já está em uso',
+      });
+    }
+  }
+
+  if (password) {
+    const errorsInPassword = FUNCTIONS.validatePassword(password);
+    if (errorsInPassword.length) {
+      for (const currentError of errorsInPassword) {
+        let message;
+        switch (currentError) {
+          case 'min':
+            message = 'A senha deve conter mais de 8 caracters';
+            break;
+          case 'uppercase':
+            message =
+              'A senha deve conter no mínimo uma letra maiúscula';
+            break;
+          case 'spaces':
+            message = 'A senha não deve conter espaços';
+            break;
+          default:
+            message = `Informe uma senha válida, erro de ${currentError}`;
+            break;
+        }
+        errors.push({
+          field: 'password',
+          message,
+        });
+      }
+    }
+  }
+
   return errors;
 };
 
@@ -96,7 +144,7 @@ const validateIfEmailAlreadyInUse = async (email) => {
     where: {
       email,
     },
-    attibutes: ['email'],
+    attributes: ['email'],
   });
 };
 
@@ -105,7 +153,7 @@ const validateIfPhoneNumberAlreadyInUse = async (phoneNumberFull) => {
     where: {
       phoneNumberFull,
     },
-    attibutes: ['phoneNumberFull'],
+    attributes: ['phoneNumberFull'],
   });
 };
 
