@@ -43,6 +43,16 @@ module.exports = (connection, Sequelize) => {
         allowNull: false,
         // unique: true,
       },
+      phoneNumberFull: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+        defaultValue: `${Sequelize.col(
+          'phoneCountryCode',
+        )}${Sequelize.col('phoneAreaCode')}${Sequelize.col(
+          'phoneNumber',
+        )}`,
+      },
       birthDate: {
         type: Sequelize.DATE,
         allowNull: false,
