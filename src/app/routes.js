@@ -1,7 +1,7 @@
 module.exports = (app) => {
   const uri = `/api/${process.env.API_VERSION}`;
 
-  app.use(uri + '/test', require('./modules/test'));
+  app.use(uri + '/users', require('./modules/users'));
 
   // If is not valid route
   app.route('*').get(function (req, res) {

@@ -16,10 +16,7 @@ module.exports = (connection, Sequelize) => {
           isEmail: true,
         },
       },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
+
       taxDocumentNumber: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -29,19 +26,32 @@ module.exports = (connection, Sequelize) => {
         type: Sequelize.ENUM('cpf', 'cnpj'),
         allowNull: false,
       },
-      phoneAreaCode: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
       phoneCountryCode: {
         type: Sequelize.STRING,
         allowNull: false,
         defaultValue: '55',
       },
+      phoneAreaCode: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       phoneNumber: {
         type: Sequelize.STRING,
         allowNull: false,
         // unique: true,
+      },
+      phoneNumberFull: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      salt: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      hash: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       birthDate: {
         type: Sequelize.DATE,
@@ -90,12 +100,12 @@ module.exports = (connection, Sequelize) => {
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.NOW,
       },
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.NOW,
       },
     },
     {
@@ -109,6 +119,11 @@ module.exports = (connection, Sequelize) => {
       foreignKey: 'id',
     });
   };
+
+  Users.addHook('beforeValidate', (user, options) => {
+    user.phoneNumberFull =
+      user.phoneCountryCode + user.phoneAreaCode + user.phoneNumber;
+  });
 
   return Users;
 };

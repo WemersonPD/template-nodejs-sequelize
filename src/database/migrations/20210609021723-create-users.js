@@ -17,10 +17,7 @@ module.exports = {
           isEmail: true,
         },
       },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
+
       taxDocumentNumber: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -30,19 +27,32 @@ module.exports = {
         type: Sequelize.ENUM('cpf', 'cnpj'),
         allowNull: false,
       },
-      phoneAreaCode: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
       phoneCountryCode: {
         type: Sequelize.STRING,
         allowNull: false,
         defaultValue: '55',
       },
+      phoneAreaCode: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       phoneNumber: {
         type: Sequelize.STRING,
         allowNull: false,
         // unique: true,
+      },
+      phoneNumberFull: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      salt: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      hash: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       birthDate: {
         type: Sequelize.DATE,
@@ -91,12 +101,12 @@ module.exports = {
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.NOW,
       },
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.NOW,
       },
     });
   },
