@@ -73,6 +73,8 @@ const valideteFields = async (body) => {
   }
 
   if (taxDocumentNumber && taxDocumentType) {
+    const taxDocumentNumberWithoutEspecialChars =
+      FUNCTIONS.removeEspecialChars(taxDocumentNumber, true);
     if (!['cpf', 'cnpj'].includes(taxDocumentType)) {
       errors.push({
         field: 'taxDocumentType',
@@ -81,7 +83,7 @@ const valideteFields = async (body) => {
     } else {
       const isValidDocument = FUNCTIONS.validateIfIsValidDocument(
         taxDocumentType,
-        taxDocumentNumber,
+        taxDocumentNumberWithoutEspecialChars,
       );
 
       if (!isValidDocument) {
@@ -90,6 +92,17 @@ const valideteFields = async (body) => {
           message: `Informe um ${taxDocumentType.toUpperCase()} válido`,
         });
       }
+    }
+
+    const documentAlreadyInUse = await validateIftaxDocumentNumber(
+      taxDocumentNumberWithoutEspecialChars,
+    );
+
+    if (documentAlreadyInUse) {
+      errors.push({
+        field: 'taxDocumentNumber',
+        message: `${taxDocumentType.toUpperCase()} já em uso`,
+      });
     }
   }
 
@@ -104,7 +117,7 @@ const valideteFields = async (body) => {
       await validateIfPhoneNumberAlreadyInUse(phoneNumberFull);
     if (phoneNumberAlreadyInUse) {
       errors.push({
-        // field: 'phoneNumberFull',
+        field: 'phoneNumberFull',
         message: 'O número de telefone já está em uso',
       });
     }
@@ -159,6 +172,15 @@ const validateIfPhoneNumberAlreadyInUse = async (phoneNumberFull) => {
   });
 };
 
+const validateIftaxDocumentNumber = async (taxDocumentNumber) => {
+  return await Users.findOne({
+    where: {
+      taxDocumentNumber,
+    },
+    attributes: ['taxDocumentNumber'],
+  });
+};
+
 module.exports = async (req, res) => {
   const body = req.body;
   const isValidFields = await valideteFields(body);
@@ -180,24 +202,41 @@ module.exports = async (req, res) => {
   try {
     addressId = await createAddress(address);
   } catch (error) {
-    let dataReturn;
-    switch (error.type) {
-      case 'invalidFields':
-        dataReturn = error.fields;
-        break;
-      default:
-        dataReturn = {};
-        break;
-    }
-
     return res
       .status(400)
       .json(
-        FUNCTIONS.objectReturn(error.message, dataReturn, true, 400),
+        FUNCTIONS.objectReturn(
+          error.message,
+          error.fields || {},
+          true,
+          400,
+        ),
       );
   }
 
   console.log(addressId);
+  try {
+    body.address = addressId;
+    body.profileStatus = 'waiting-validation';
+    body.emailValidationStatus = 'waiting';
+    body.phoneValidationStatus = 'waiting';
+    body.taxDocumentNumber = FUNCTIONS.removeEspecialChars(
+      body.taxDocumentNumber,
+      true,
+    );
+    body.phoneAreaCode = FUNCTIONS.removeEspecialChars(
+      body.phoneAreaCode,
+      true,
+    );
+    body.phoneNumber = FUNCTIONS.removeEspecialChars(
+      body.phoneNumber,
+      true,
+    );
+
+    await Users.create(body);
+  } catch (error) {
+    console.log(error);
+  }
 
   return res.json('Foi');
 };

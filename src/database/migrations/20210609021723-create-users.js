@@ -30,14 +30,14 @@ module.exports = {
         type: Sequelize.ENUM('cpf', 'cnpj'),
         allowNull: false,
       },
-      phoneAreaCode: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
       phoneCountryCode: {
         type: Sequelize.STRING,
         allowNull: false,
         defaultValue: '55',
+      },
+      phoneAreaCode: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       phoneNumber: {
         type: Sequelize.STRING,
@@ -48,11 +48,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
-        defaultValue: `${Sequelize.col(
-          'phoneCountryCode',
-        )}${Sequelize.col('phoneAreaCode')}${Sequelize.col(
-          'phoneNumber',
-        )}`,
       },
       birthDate: {
         type: Sequelize.DATE,
