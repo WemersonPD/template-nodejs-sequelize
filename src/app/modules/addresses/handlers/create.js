@@ -14,13 +14,13 @@ const valideteFields = async (address) => {
     for (const field of errorsInAddress) {
       errors.push({
         field: `address.${field}`,
-        message: 'O campo é obrigatório',
+        message: 'O campo é obrigatório!',
       });
     }
   } else {
     errors.push({
       field: `address`,
-      message: 'O campo é obrigatório',
+      message: 'O campo é obrigatório!',
     });
   }
 
@@ -34,7 +34,7 @@ module.exports = async (address) => {
     throw {
       type: 'invalidFields',
       fields: errorsInAddress,
-      message: 'Informe dados válidos',
+      message: 'Informe dados válidos!',
     };
   }
 

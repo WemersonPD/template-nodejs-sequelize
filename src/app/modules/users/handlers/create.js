@@ -24,7 +24,7 @@ const valideteFields = async (body) => {
     if (!currentField && currentField != 0) {
       errors.push({
         field: keyRequiredInBody,
-        message: 'O campo é obrigatório',
+        message: 'O campo é obrigatório!',
       });
     }
   }
@@ -38,7 +38,6 @@ const valideteFields = async (body) => {
     taxDocumentNumber,
     taxDocumentType,
     password,
-    address,
   } = body;
 
   // Re-validete when enter with data, please
@@ -51,12 +50,12 @@ const valideteFields = async (body) => {
     if (!isValidEmail) {
       errors.push({
         field: 'email',
-        message: 'Informe um email válido',
+        message: 'Informe um email válido!',
       });
     } else if (emailAlreadyInUse) {
       errors.push({
         field: 'email',
-        message: 'Email já em uso',
+        message: 'Email já em uso!',
       });
     }
   }
@@ -67,7 +66,7 @@ const valideteFields = async (body) => {
     if (!isBiggerThen18) {
       errors.push({
         field: 'birthDate',
-        message: 'O usuário deve ter mais de 18 anos',
+        message: 'O usuário deve ter mais de 18 anos!',
       });
     }
   }
@@ -89,7 +88,7 @@ const valideteFields = async (body) => {
       if (!isValidDocument) {
         errors.push({
           field: 'taxDocumentNumber',
-          message: `Informe um ${taxDocumentType.toUpperCase()} válido`,
+          message: `Informe um ${taxDocumentType.toUpperCase()} válido!`,
         });
       }
     }
@@ -101,7 +100,7 @@ const valideteFields = async (body) => {
     if (documentAlreadyInUse) {
       errors.push({
         field: 'taxDocumentNumber',
-        message: `${taxDocumentType.toUpperCase()} já em uso`,
+        message: `${taxDocumentType.toUpperCase()} já em uso!`,
       });
     }
   }
@@ -118,7 +117,7 @@ const valideteFields = async (body) => {
     if (phoneNumberAlreadyInUse) {
       errors.push({
         field: 'phoneNumberFull',
-        message: 'O número de telefone já está em uso',
+        message: 'O número de telefone já está em uso!',
       });
     }
   }
@@ -130,17 +129,17 @@ const valideteFields = async (body) => {
         let message;
         switch (currentError) {
           case 'min':
-            message = 'A senha deve conter mais de 8 caracters';
+            message = 'A senha deve conter mais de 8 caracters!';
             break;
           case 'uppercase':
             message =
-              'A senha deve conter no mínimo uma letra maiúscula';
+              'A senha deve conter no mínimo uma letra maiúscula!';
             break;
           case 'spaces':
-            message = 'A senha não deve conter espaços';
+            message = 'A senha não deve conter espaços!';
             break;
           default:
-            message = `Informe uma senha válida, erro de ${currentError}`;
+            message = `Informe uma senha válida, erro de ${currentError}!`;
             break;
         }
         errors.push({
@@ -189,7 +188,7 @@ module.exports = async (req, res) => {
       .status(400)
       .json(
         FUNCTIONS.objectReturn(
-          'Forneça dados válidos',
+          'Informe dados válidos!',
           isValidFields,
           true,
           400,
@@ -214,7 +213,6 @@ module.exports = async (req, res) => {
       );
   }
 
-  console.log(addressId);
   try {
     body.address = addressId;
     body.profileStatus = 'waiting-validation';
@@ -233,10 +231,32 @@ module.exports = async (req, res) => {
       true,
     );
 
+    body.salt = FUNCTIONS.generateSalt();
+    body.hash = FUNCTIONS.encryptIt(body.password, body.salt);
+    delete body.password;
+
     await Users.create(body);
   } catch (error) {
-    console.log(error);
+    return res
+      .status(500)
+      .json(
+        FUNCTIONS.objectReturn(
+          'Erro ao criar o usuário!',
+          `${error}`,
+          true,
+          500,
+        ),
+      );
   }
 
-  return res.json('Foi');
+  return res
+    .status(200)
+    .json(
+      FUNCTIONS.objectReturn(
+        'Usuário criado com sucesso!',
+        {},
+        false,
+        200,
+      ),
+    );
 };

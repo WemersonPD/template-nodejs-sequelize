@@ -2,6 +2,83 @@ const moment = require('moment');
 const { cpf, cnpj } = require('cpf-cnpj-validator');
 const emailValidator = require('email-validator');
 const passwordValidator = require('password-validator');
+const crypto = require('crypto');
+const isEmpty = require('lodash/isEmpty');
+const jwt = require('jsonwebtoken');
+
+const generateSalt = () => crypto.randomBytes(16).toString('hex');
+
+const encryptIt = (password, salt) => {
+  let hash = crypto.createHmac('sha512', salt);
+  hash.update(password);
+  hash = hash.digest('hex');
+  return hash;
+};
+
+const compareIt = (password, salt, hash) => {
+  // Provided password, salt and hash to Database
+  const currentPassword = encryptIt(password, salt);
+  return currentPassword === hash;
+};
+
+// Token Validation
+const tokenValidation = async (value) => {
+  const split = value.split(' ');
+  const token = split[1];
+
+  const db = require('../../database/models');
+  const Token = db.Tokens;
+  let query = {
+    where: {
+      token,
+    },
+  };
+
+  try {
+    let data = await Token.findOne(query);
+
+    if (!isEmpty(data)) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (e) {
+    return false;
+  }
+};
+
+const tokenDecode = (value) => {
+  const split = value.split(' ');
+  const token = split[1];
+
+  const decoded = jwt.decode(token);
+  return decoded;
+};
+
+const tokenExpired = (expiriedIn) => {
+  const currentDate = new Date();
+  const dateExpiration = new Date(expiriedIn);
+  return currentDate > dateExpiration;
+};
+
+const validateFields = (keysRequired = [], body) => {
+  const errors = [];
+
+  for (const key of keysRequired) {
+    if (
+      body[key] === '' ||
+      body[key] === undefined ||
+      body[key] === null
+    ) {
+      errors.push({
+        field: key,
+        message: 'This field is required',
+      });
+    }
+  }
+
+  return errors;
+};
 
 // Default Object to Return in Response
 const objectReturn = (message, data, error, statusCode) => ({
@@ -112,6 +189,9 @@ const functions = {
   removeEspecialChars,
   validatePassword,
   validateAddress,
+  generateSalt,
+  encryptIt,
+  compareIt,
 };
 
 module.exports = functions;

@@ -16,10 +16,7 @@ module.exports = (connection, Sequelize) => {
           isEmail: true,
         },
       },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
+
       taxDocumentNumber: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -47,6 +44,14 @@ module.exports = (connection, Sequelize) => {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
+      },
+      salt: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      hash: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       birthDate: {
         type: Sequelize.DATE,
