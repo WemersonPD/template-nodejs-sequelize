@@ -83,6 +83,26 @@ const validateIfIsValidDocument = (
   return isValid;
 };
 
+const validateAddress = (address) => {
+  const errors = [];
+  const keysRequired = [
+    'zipCode',
+    'city',
+    'street',
+    'streetNumber',
+    'state',
+    'country',
+  ];
+
+  for (const key of keysRequired) {
+    if (!address[key]) {
+      errors.push(key);
+    }
+  }
+
+  return errors;
+};
+
 const functions = {
   objectReturn,
   validateEmail,
@@ -91,6 +111,7 @@ const functions = {
   validateIfIsValidDocument,
   removeEspecialChars,
   validatePassword,
+  validateAddress,
 };
 
 module.exports = functions;

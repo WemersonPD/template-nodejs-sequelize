@@ -1,9 +1,9 @@
-const isEmpty = require('lodash/isEmpty');
-
 const FUNCTIONS = require('../../../helpers/functions');
 
 const db = require('../../../../database/models/');
 const Users = db.Users;
+
+const createAddress = require('../../addresses/handlers/create');
 
 const valideteFields = async (body) => {
   const errors = [];
@@ -16,6 +16,7 @@ const valideteFields = async (body) => {
     'phoneNumber',
     'birthDate',
     'fullname',
+    'address',
   ];
 
   for (const keyRequiredInBody of keysRequiredInBody) {
@@ -37,6 +38,7 @@ const valideteFields = async (body) => {
     taxDocumentNumber,
     taxDocumentType,
     password,
+    address,
   } = body;
 
   // Re-validete when enter with data, please
@@ -172,5 +174,30 @@ module.exports = async (req, res) => {
         ),
       );
   }
+
+  const { address } = body;
+  let addressId;
+  try {
+    addressId = await createAddress(address);
+  } catch (error) {
+    let dataReturn;
+    switch (error.type) {
+      case 'invalidFields':
+        dataReturn = error.fields;
+        break;
+      default:
+        dataReturn = {};
+        break;
+    }
+
+    return res
+      .status(400)
+      .json(
+        FUNCTIONS.objectReturn(error.message, dataReturn, true, 400),
+      );
+  }
+
+  console.log(addressId);
+
   return res.json('Foi');
 };
